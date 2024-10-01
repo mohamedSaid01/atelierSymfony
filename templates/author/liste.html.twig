@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Liste des Auteurs</title>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container mt-5">
+        {% if authers is not defined or authers is empty %}
+            <h1 class="text-danger">La liste des auteurs n'est pas définie.</h1>
+        {% else %}
+            <h1 class="mb-4">Liste des Auteurs</h1>
+            <table class="table table-bordered table-striped">
+                <thead class="thead-dark">
+                    <tr>
+                        <th>Username</th>
+                        <th>Image</th>
+                        <th>Détails</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for author in authers %}
+                    <tr>
+                        <td>{{ author.username }}</td>
+                        <td>
+                            <img class="img-fluid" src="{{ asset(author.picture) }}" alt="author image" style="max-width: 100px;">
+                        </td>
+                        <td>
+                            <a href="{{ path('author_details', { 'id': author.id }) }}" class="btn btn-primary">Voir détails</a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+
+            <h2>Informations Complémentaires</h2>
+            <h5>Le nombre d'auteurs : <span class="text-success">{{ authers|length }}</span></h5>
+
+            {% set somme = 0 %}
+            {% for author in authers %}
+                {% set somme = somme + author.nb_books %}
+            {% endfor %}
+
+            <h5>Le nombre total de livres : <span class="text-success">{{ somme }}</span></h5>
+        {% endif %}
+    </div>
+
+</body>
+</html>
